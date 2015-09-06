@@ -2,6 +2,7 @@ package us.xwhite.spring.blog.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,11 +29,16 @@ public class Article implements Serializable {
     public Article() {
     }
 
-    public Article(String title, String content, Author author, List<Tag> tags) {
+    public Article(Long id, String title, String content, Author author, List<Tag> tags) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
         this.tags = tags;
+    }
+
+    public Article(String title, String content, Author author, List<Tag> tags) {
+        this(null, title, content, author, tags);
     }
 
     @Column(name = "title")
@@ -92,4 +98,40 @@ public class Article implements Serializable {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        hash = 47 * hash + Objects.hashCode(this.title);
+        hash = 47 * hash + Objects.hashCode(this.content);
+        hash = 47 * hash + Objects.hashCode(this.author);
+        hash = 47 * hash + Objects.hashCode(this.tags);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Article other = (Article) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        if (!Objects.equals(this.content, other.content)) {
+            return false;
+        }
+        if (!Objects.equals(this.author, other.author)) {
+            return false;
+        }
+        return Objects.equals(this.tags, other.tags);
+    }
+
 }
