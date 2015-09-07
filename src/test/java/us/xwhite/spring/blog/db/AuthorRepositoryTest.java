@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import us.xwhite.spring.blog.domain.Article;
 import us.xwhite.spring.blog.domain.Author;
 
 /**
@@ -37,6 +36,7 @@ public class AuthorRepositoryTest {
         assertEquals("Wagon", me.getLastName());
         assertEquals("chuck.wagon@xwhite.us", me.getEmail());
         assertEquals("8005551212", me.getPhone());
+        assertEquals(3, me.getArticles().size());
     }
 
     @Test
