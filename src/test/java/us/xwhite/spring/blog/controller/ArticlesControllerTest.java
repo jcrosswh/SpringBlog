@@ -31,7 +31,7 @@ import static us.xwhite.test.TestUtil.APPLICATION_JSON_UTF8;
 public class ArticlesControllerTest {
 
     @Test
-    public void articles_ShouldReturnBasicMessage() throws Exception {
+    public void getAllArticles() throws Exception {
 
         List<Article> expectedList = new ArrayList<>();
         Author author = new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212");
@@ -55,7 +55,7 @@ public class ArticlesControllerTest {
     }
 
     @Test
-    public void getArticleById_SuccessfulFind() throws Exception {
+    public void getOneArticle_SuccessfulFind() throws Exception {
 
         Article expectedArticle = new Article("Brand New Article", "Writing it up!!", new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212"
         ), null);
@@ -73,7 +73,7 @@ public class ArticlesControllerTest {
     }
 
     @Test
-    public void getArticleById_NoFind() throws Exception {
+    public void getOneArticle_NoFind() throws Exception {
 
         ArticleRepository mockRepository = mock(ArticleRepository.class);
         when(mockRepository.findOne(17)).thenReturn(null);
