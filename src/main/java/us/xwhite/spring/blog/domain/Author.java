@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,6 +42,11 @@ public class Author implements Serializable {
     }
 
     public Author(String firstName, String lastName, String email, String phone) {
+        this(null, firstName, lastName, email, phone);
+    }
+
+    public Author(Long id, String firstName, String lastName, String email, String phone) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

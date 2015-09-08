@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import us.xwhite.spring.blog.db.ArticleRepository;
 import us.xwhite.spring.blog.domain.Article;
 import us.xwhite.spring.blog.domain.Author;
+import us.xwhite.spring.blog.domain.Tag;
 import us.xwhite.test.TestUtil;
 import static us.xwhite.test.TestUtil.APPLICATION_JSON_UTF8;
 
@@ -90,10 +91,12 @@ public class ArticlesControllerTest {
 
     @Test
     public void saveArticle() throws Exception {
+        List<Tag> newTag = new ArrayList<>();
+        newTag.add(new Tag("brand-new-article"));
         Article article = new Article("Brand New Article", "Writing it up!!", new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212"
-        ), null);
+        ), newTag);
         Article expectedArticle = new Article(1L, "Brand New Article", "Writing it up!!", new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212"
-        ), null);
+        ), newTag);
         ArticleRepository mockRepository = mock(ArticleRepository.class);
         when(mockRepository.save(article)).thenReturn(expectedArticle);
 
