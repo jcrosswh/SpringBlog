@@ -29,6 +29,13 @@ public class Tag implements Serializable {
     @ManyToMany(mappedBy = "tags")
     private List<Article> articles;
 
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

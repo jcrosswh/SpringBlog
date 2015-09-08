@@ -17,3 +17,8 @@ insert into ARTICLES (title, content, author_id) values ('Lucky #13', 'Now I kno
 insert into ARTICLES (title, content, author_id) values ('Where Is the Money In Blogging?', 'Why don''t sponsors want to pay for one sentence articles?', 1);
 insert into ARTICLES (title, content, author_id) values ('Say Good Night, Charlie!', 'Good night, Charlie.', 1);
 
+insert into TAGS (tag_name) values ('fun-post');
+insert into TAGS (tag_name) values ('information');
+insert into TAGS (tag_name) values ('lists');
+insert into TAGS (tag_name) values ('sci-fi');
+insert into TAGS (tag_name) values ('miscelaneous');
