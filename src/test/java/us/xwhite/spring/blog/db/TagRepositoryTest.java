@@ -39,6 +39,8 @@ public class TagRepositoryTest {
         Tag tag = tagRepository.findOne(4);
         assertEquals(4, (long) tag.getId());
         assertEquals("sci-fi", tag.getName());
+        assertEquals(1, tag.getArticles().size());
+        assertEquals("Star Wars vs. Star Trek", tag.getArticles().get(0).getTitle());
     }
 
     @Test

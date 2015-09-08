@@ -37,6 +37,7 @@ public class AuthorRepositoryTest {
         assertEquals("chuck.wagon@xwhite.us", me.getEmail());
         assertEquals("8005551212", me.getPhone());
         assertEquals(3, me.getArticles().size());
+        assertEquals("What Is the Name of the Man on First Base?", me.getArticles().get(1).getTitle());
     }
 
     @Test

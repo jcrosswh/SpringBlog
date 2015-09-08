@@ -40,6 +40,8 @@ public class ArticleRepositoryTest {
         assertEquals("Crosswhite", thirteen.getAuthor().getLastName());
         assertEquals("joel.crosswhite@xwhite.us", thirteen.getAuthor().getEmail());
         assertEquals("8005551212", thirteen.getAuthor().getPhone());
+        assertEquals(2, thirteen.getTags().size());
+        assertEquals("miscelaneous", thirteen.getTags().get(1).getName());
     }
 
     @Test
