@@ -5,6 +5,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,7 @@ public class ArticleRepositoryTest {
     @Test
     @Transactional
     public void findOne() {
-        Article thirteen = articleRepository.findOne(13);
+        Article thirteen = articleRepository.findOne(13L);
         assertEquals(13, (long) thirteen.getId());
         assertEquals("Lucky #13", thirteen.getTitle());
         assertEquals("Now I know why skyscrapers skip this floor.", thirteen.getContent());
@@ -58,12 +60,20 @@ public class ArticleRepositoryTest {
     @Transactional
     public void save() {
         assertEquals(15, articleRepository.count());
-        Author author = articleRepository.findOne(13).getAuthor();
+        Author author = articleRepository.findOne(13L).getAuthor();
         Article article = new Article("What I Learned in Java Today", "Java so rocks!", author, null);
         Article saved = articleRepository.save(article);
         assertEquals(16, articleRepository.count());
         assertNewArticle(saved);
         assertNewArticle(articleRepository.findOne(16L));
+    }
+    
+    @Test
+    @Transactional
+    public void paginate() {
+        assertEquals(15, articleRepository.count());
+        Page<Article> articles = articleRepository.findAll(new PageRequest(1, 5));
+        assertEquals(5, articles.getSize());
     }
 
     private void assertNewArticle(Article article) {

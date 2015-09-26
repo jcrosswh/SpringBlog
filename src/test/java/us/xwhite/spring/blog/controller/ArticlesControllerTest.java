@@ -61,7 +61,7 @@ public class ArticlesControllerTest {
         Article expectedArticle = new Article("Brand New Article", "Writing it up!!", new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212"
         ), null);
         ArticleRepository mockRepository = mock(ArticleRepository.class);
-        when(mockRepository.findOne(17)).thenReturn(expectedArticle);
+        when(mockRepository.findOne(17L)).thenReturn(expectedArticle);
 
         ArticlesController controller = new ArticlesController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -77,7 +77,7 @@ public class ArticlesControllerTest {
     public void getOneArticle_NoFind() throws Exception {
 
         ArticleRepository mockRepository = mock(ArticleRepository.class);
-        when(mockRepository.findOne(17)).thenReturn(null);
+        when(mockRepository.findOne(17L)).thenReturn(null);
 
         ArticlesController controller = new ArticlesController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
