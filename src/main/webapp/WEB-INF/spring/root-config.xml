@@ -8,4 +8,7 @@
     <import resource="mvc.xml" />
     
     <context:component-scan base-package="us.xwhite.spring.blog" />
+
+    <!-- Include a swagger configuration-->
+    <bean name="/applicationSwaggerConfig" class="us.xwhite.spring.doc.ApplicationSwaggerConfig"/>
 </beans>
