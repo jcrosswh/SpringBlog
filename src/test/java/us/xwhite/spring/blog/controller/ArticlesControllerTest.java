@@ -10,6 +10,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.springframework.http.MediaType;
+import static org.springframework.restdocs.RestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.RestDocumentation.modifyResponseTo;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import org.springframework.restdocs.response.ResponsePostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,7 +48,7 @@ public class ArticlesControllerTest {
         when(mockRepository.findAll()).thenReturn(expectedList);
 
         ArticlesController controller = new ArticlesController(mockRepository);
-        MockMvc mockMvc = standaloneSetup(controller).build();
+        MockMvc mockMvc = standaloneSetup(controller).apply(documentationConfiguration()).build();
 
         mockMvc.perform(get("/articles").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
@@ -52,7 +56,9 @@ public class ArticlesControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].title", is("Brand New Article")))
-                .andExpect(jsonPath("$[1].title", is("Second Article")));
+                .andExpect(jsonPath("$[1].title", is("Second Article")))
+                .andDo(modifyResponseTo(ResponsePostProcessors.prettyPrintContent())
+                        .andDocument("getArticles"));
     }
 
     @Test
@@ -70,7 +76,17 @@ public class ArticlesControllerTest {
                 // .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.title", is("Brand New Article")));
+                .andExpect(jsonPath("$.title", is(expectedArticle.getTitle())))
+                .andDo(modifyResponseTo(ResponsePostProcessors.prettyPrintContent())
+                        .andDocument("getArticle")
+                        .withResponseFields(
+                                fieldWithPath("id").description("The article's id"),
+                                fieldWithPath("title").description("The article's title"),
+                                fieldWithPath("content").description("The article's body"),
+                                fieldWithPath("tags").description("Tags that belong to the article"),
+                                fieldWithPath("author").description("The article's author")
+                                
+                        ));
     }
 
     @Test

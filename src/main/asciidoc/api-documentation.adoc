@@ -1,0 +1,36 @@
+= API Documentation for the Blog Example application
+Joel Crosswhite;
+:doctype: book
+:toc:
+:toclevels: 4
+:source-highlighter: highlightjs
+
+[introduction]
+= Introduction
+This application is my test application to create a simple blog application that
+ contains articles, authors & tags.
+
+[getting-a-list-of-articles]
+= Getting a list of articles
+To retrieve a list of articles in the system.
+
+Example of a request:
+include::{snippets}/getArticles/http-request.adoc[]
+include::{snippets}/getArticles/curl-request.adoc[]
+
+Example of a success response:
+include::{snippets}/getArticles/http-response.adoc[]
+
+[getting-an-article]
+= Getting an article
+To retrieve one article you need to know its article ID, which should be provided as part of the URI.
+
+Example of a request:
+include::{snippets}/getArticle/http-request.adoc[]
+include::{snippets}/getArticle/curl-request.adoc[]
+
+Example of a success response:
+include::{snippets}/getArticle/http-response.adoc[]
+
+Definition of the returned properties:
+include::{snippets}/getArticle/response-fields.adoc[]
