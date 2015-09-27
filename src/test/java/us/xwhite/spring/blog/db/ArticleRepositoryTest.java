@@ -67,13 +67,26 @@ public class ArticleRepositoryTest {
         assertNewArticle(saved);
         assertNewArticle(articleRepository.findOne(16L));
     }
-    
+
     @Test
     @Transactional
     public void paginate() {
         assertEquals(15, articleRepository.count());
         Page<Article> articles = articleRepository.findAll(new PageRequest(1, 5));
         assertEquals(5, articles.getSize());
+    }
+
+    @Test
+    @Transactional
+    public void findAllByTitle() {
+        assertEquals(15, articleRepository.count());
+
+        // Case sensitive 
+        List<Article> allArticles = articleRepository.findAllByTitle("What");
+        assertEquals(3, allArticles.size());
+        
+        allArticles = articleRepository.findAllByTitle("what");
+        assertEquals(0, allArticles.size());
     }
 
     private void assertNewArticle(Article article) {
