@@ -1,9 +1,7 @@
 package us.xwhite.spring.blog.controller;
 
-import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,17 +49,7 @@ public class AuthorsController {
     public ResponseEntity<Author> saveAuthor(@RequestBody Author author, UriComponentsBuilder ucb) {
 
         Author savedAuthor = authorRepository.save(author);
-        HttpHeaders headers = new HttpHeaders();
-        URI locationUri
-                = ucb.path("/authors/")
-                .path(String.valueOf(savedAuthor.getId()))
-                .build()
-                .toUri();
-        headers.setLocation(locationUri);
-        ResponseEntity<Author> responseEntity
-                = new ResponseEntity<>(
-                        savedAuthor, headers, HttpStatus.CREATED);
-        return responseEntity;
+        return ResponseEntity.created(ucb.path("/authors/").path(String.valueOf(savedAuthor.getId())).build().toUri()).body(savedAuthor);
     }
 
     @ExceptionHandler(AuthorNotFoundException.class)
