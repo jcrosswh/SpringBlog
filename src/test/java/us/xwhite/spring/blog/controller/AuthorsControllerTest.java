@@ -57,7 +57,7 @@ public class AuthorsControllerTest {
 
         Author expectedAuthor = new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212");
         AuthorRepository mockRepository = mock(AuthorRepository.class);
-        when(mockRepository.findOne(1)).thenReturn(expectedAuthor);
+        when(mockRepository.findOne(1L)).thenReturn(expectedAuthor);
 
         AuthorsController controller = new AuthorsController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -73,7 +73,7 @@ public class AuthorsControllerTest {
     public void getOneAuthor_NoFind() throws Exception {
 
         AuthorRepository mockRepository = mock(AuthorRepository.class);
-        when(mockRepository.findOne(1)).thenReturn(null);
+        when(mockRepository.findOne(1L)).thenReturn(null);
 
         AuthorsController controller = new AuthorsController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();

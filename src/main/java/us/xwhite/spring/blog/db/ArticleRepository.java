@@ -14,6 +14,6 @@ import us.xwhite.spring.blog.domain.Article;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    @Query("SELECT s FROM Article s WHERE s.title LIKE %:searchTerm%")
+    @Query("SELECT s FROM ARTICLES s WHERE s.title LIKE %:searchTerm%")
     public List<Article> findAllByTitle(@Param("searchTerm") String searchTerm);
 }

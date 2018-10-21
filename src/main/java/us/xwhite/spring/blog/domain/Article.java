@@ -12,18 +12,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.SequenceGenerator;
 
 /**
  *
  * @author Joel
  */
-@Entity
-@Table(name = "ARTICLES")
+@Entity(name = "ARTICLES")
 public class Article implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "author-sequence-generator"
+    )
+    @SequenceGenerator(
+            name = "author-sequence-generator",
+            sequenceName = "ARTICLES_SEQ"
+    )
     private Long id;
 
     public Article() {

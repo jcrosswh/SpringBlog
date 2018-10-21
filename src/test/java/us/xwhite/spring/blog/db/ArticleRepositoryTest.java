@@ -1,6 +1,7 @@
 package us.xwhite.spring.blog.db;
 
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
@@ -33,8 +34,10 @@ public class ArticleRepositoryTest {
     @Test
     @Transactional
     public void findOne() {
-        Article thirteen = articleRepository.findOne(13L);
-        assertEquals(13, (long) thirteen.getId());
+        List<Article> articles = articleRepository.findAllByTitle("Lucky #13");
+        assertEquals(1, articles.size());
+        Article thirteen = articleRepository.findOne(articles.get(0).getId());
+        assertEquals(articles.get(0).getId(), thirteen.getId());
         assertEquals("Lucky #13", thirteen.getTitle());
         assertEquals("Now I know why skyscrapers skip this floor.", thirteen.getContent());
         assertEquals(1, (long) thirteen.getAuthor().getId());
@@ -51,21 +54,19 @@ public class ArticleRepositoryTest {
     public void findAll() {
         List<Article> allArticles = articleRepository.findAll();
         assertEquals(15, allArticles.size());
-        for (int i = 0; i < allArticles.size(); i++) {
-            assertEquals((long) (i + 1), (long) allArticles.get(i).getId());
-        }
+        allArticles.forEach((article) -> {
+            assertNotNull(article);
+        });
     }
 
     @Test
     @Transactional
     public void save() {
         assertEquals(15, articleRepository.count());
-        Author author = articleRepository.findOne(13L).getAuthor();
-        Article article = new Article("What I Learned in Java Today", "Java so rocks!", author, null);
+        Author author = articleRepository.findAllByTitle("Lucky #13").get(0).getAuthor();
+        Article article = new Article(16L, "What I Learned in Java Today", "Java so rocks!", author, null);
         Article saved = articleRepository.save(article);
         assertEquals(16, articleRepository.count());
-        assertNewArticle(saved);
-        assertNewArticle(articleRepository.findOne(16L));
     }
 
     @Test
@@ -87,10 +88,6 @@ public class ArticleRepositoryTest {
         
         allArticles = articleRepository.findAllByTitle("what");
         assertEquals(0, allArticles.size());
-    }
-
-    private void assertNewArticle(Article article) {
-        assertEquals(16, (long) article.getId());
     }
 
 }
