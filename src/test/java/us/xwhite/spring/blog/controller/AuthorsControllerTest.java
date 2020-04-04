@@ -2,6 +2,7 @@ package us.xwhite.spring.blog.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import org.junit.Test;
@@ -21,7 +22,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import us.xwhite.spring.blog.db.AuthorRepository;
 import us.xwhite.spring.blog.domain.Author;
 import us.xwhite.test.TestUtil;
-import static us.xwhite.test.TestUtil.APPLICATION_JSON_UTF8;
 
 /**
  *
@@ -46,7 +46,7 @@ public class AuthorsControllerTest {
         mockMvc.perform(get("/authors").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].firstName", is("Joel")))
                 .andExpect(jsonPath("$[1].firstName", is("Chuck")));
@@ -57,7 +57,7 @@ public class AuthorsControllerTest {
 
         Author expectedAuthor = new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212");
         AuthorRepository mockRepository = mock(AuthorRepository.class);
-        when(mockRepository.findOne(1L)).thenReturn(expectedAuthor);
+        when(mockRepository.findById(1L)).thenReturn(Optional.of(expectedAuthor));
 
         AuthorsController controller = new AuthorsController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -65,7 +65,7 @@ public class AuthorsControllerTest {
         mockMvc.perform(get("/authors/1").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("Joel")));
     }
 
@@ -73,7 +73,7 @@ public class AuthorsControllerTest {
     public void getOneAuthor_NoFind() throws Exception {
 
         AuthorRepository mockRepository = mock(AuthorRepository.class);
-        when(mockRepository.findOne(1L)).thenReturn(null);
+        when(mockRepository.findById(1L)).thenReturn(Optional.empty());
 
         AuthorsController controller = new AuthorsController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -81,7 +81,7 @@ public class AuthorsControllerTest {
         mockMvc.perform(get("/authors/1").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", is("Author [1] not found")));
     }
 

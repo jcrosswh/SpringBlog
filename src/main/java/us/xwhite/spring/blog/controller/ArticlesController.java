@@ -1,6 +1,7 @@
 package us.xwhite.spring.blog.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +39,8 @@ public class ArticlesController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Article getOneArticle(@PathVariable("id") Long id) {
-        Article retval = articleRepository.findOne(id);
-        if (retval == null) {
-            throw new ArticleNotFoundException(id);
-        }
-        return retval;
+        Optional<Article> retval = articleRepository.findById(id);
+        return retval.orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")

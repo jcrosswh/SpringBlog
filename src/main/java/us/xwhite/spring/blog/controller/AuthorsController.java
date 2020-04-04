@@ -1,6 +1,7 @@
 package us.xwhite.spring.blog.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +39,8 @@ public class AuthorsController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Author getOneAuthor(@PathVariable("id") Long id) {
-        Author retval = authorRepository.findOne(id);
-        if (retval == null) {
-            throw new AuthorNotFoundException(id);
-        }
-        return retval;
+        Optional<Author> retval = authorRepository.findById(id);
+        return retval.orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")

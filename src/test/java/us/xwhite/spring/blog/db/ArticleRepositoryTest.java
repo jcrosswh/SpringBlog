@@ -1,13 +1,13 @@
 package us.xwhite.spring.blog.db;
 
 import java.util.List;
-import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public class ArticleRepositoryTest {
     public void findOne() {
         List<Article> articles = articleRepository.findAllByTitle("Lucky #13");
         assertEquals(1, articles.size());
-        Article thirteen = articleRepository.findOne(articles.get(0).getId());
+        Article thirteen = articleRepository.findById(articles.get(0).getId()).get();
         assertEquals(articles.get(0).getId(), thirteen.getId());
         assertEquals("Lucky #13", thirteen.getTitle());
         assertEquals("Now I know why skyscrapers skip this floor.", thirteen.getContent());
@@ -73,7 +73,8 @@ public class ArticleRepositoryTest {
     @Transactional
     public void paginate() {
         assertEquals(15, articleRepository.count());
-        Page<Article> articles = articleRepository.findAll(new PageRequest(1, 5));
+        Page<Article> articles = articleRepository.findAll(new PageRequest(1, 5, Sort.unsorted()) {
+        });
         assertEquals(5, articles.getSize());
     }
 

@@ -24,7 +24,6 @@ import us.xwhite.spring.blog.domain.Article;
 import us.xwhite.spring.blog.domain.Author;
 import us.xwhite.spring.blog.domain.Tag;
 import us.xwhite.test.TestUtil;
-import static us.xwhite.test.TestUtil.APPLICATION_JSON_UTF8;
 
 /**
  *
@@ -50,7 +49,7 @@ public class ArticlesControllerTest {
         mockMvc.perform(get("/articles").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].title", is("Brand New Article")))
                 .andExpect(jsonPath("$[1].title", is("Second Article")));
@@ -62,7 +61,7 @@ public class ArticlesControllerTest {
         Article expectedArticle = new Article("Brand New Article", "Writing it up!!", new Author("Joel", "Crosswhite", "joel.crosswhite@xwhite.us ", "8005551212"
         ), null);
         ArticleRepository mockRepository = mock(ArticleRepository.class);
-        when(mockRepository.findOne(17L)).thenReturn(expectedArticle);
+        when(mockRepository.findById(17L)).thenReturn(Optional.of(expectedArticle));
 
         ArticlesController controller = new ArticlesController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -70,7 +69,7 @@ public class ArticlesControllerTest {
         mockMvc.perform(get("/articles/17").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is("Brand New Article")));
     }
 
@@ -78,7 +77,7 @@ public class ArticlesControllerTest {
     public void getOneArticle_NoFind() throws Exception {
 
         ArticleRepository mockRepository = mock(ArticleRepository.class);
-        when(mockRepository.findOne(17L)).thenReturn(null);
+        when(mockRepository.findById(17L)).thenReturn(Optional.empty());
 
         ArticlesController controller = new ArticlesController(mockRepository);
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -86,7 +85,7 @@ public class ArticlesControllerTest {
         mockMvc.perform(get("/articles/17").accept(MediaType.APPLICATION_JSON))
                 // .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message", is("Article [17] not found")));
     }
 
